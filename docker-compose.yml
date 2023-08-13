@@ -1,0 +1,18 @@
+---
+version: '3.4'
+
+services:
+  tor:
+    build: 
+      context: ./src
+    image: whirlpool-client-cli
+    container_name: whirlpool-client-cli
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    secrets:
+      - wallet_secret
+
+secrets:
+  wallet_secret:
+    file: ./wallet_secret.txt
