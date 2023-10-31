@@ -3,12 +3,16 @@
 # set -e
 
 if [ ! -f "/app/data/whirlpool-cli-config.properties" ]; then
-  echo "Initialization required. Please run the following:"
+  echo "Initialization required!"
   echo 
-  echo "docker run --rm -it -v \$(pwd)/data:/app/data whirlpool-client-cli java -jar /app/target/whirlpool-client-cli-0.10.16-run.jar --init"
-  sleep 10 && exit 1
+  java -jar /app/target/whirlpool-client-cli-$VERSION-run.jar --init
 fi
 
-PP=$(cat /run/secrets/wallet_secret)
-echo $PP | java -jar /app/target/whirlpool-client-cli-*-run.jar --authenticate --logging.file=/app/log
-tail -f /app/log
+if [ ! -f "/run/secrets/wallet_secret" ]; then
+  echo "ERROR: wallet password not found."
+  exit 1
+else
+  PP=$(cat /run/secrets/wallet_secret)
+  echo $PP | java -jar /app/target/whirlpool-client-cli-$VERSION-run.jar --authenticate --logging.file=/app/log
+  tail -f /app/log
+fi
