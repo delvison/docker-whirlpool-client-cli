@@ -2,17 +2,15 @@
 version: '3.4'
 
 services:
-  tor:
+   whirlpool-client-cli:
     build: 
-      context: ./src
+      context: ./src/whirlpool-client-cli/
+      args:
+        VERSION: 0.10.17.1  # https://code.samourai.io/whirlpool/whirlpool-client-cli/-/releases
     image: whirlpool-client-cli
     container_name: whirlpool-client-cli
     restart: unless-stopped
     volumes:
       - ./data:/app/data
-    secrets:
-      - wallet_secret
-
-secrets:
-  wallet_secret:
-    file: ./wallet_secret.txt
+    ports:
+      - 8899:8899
